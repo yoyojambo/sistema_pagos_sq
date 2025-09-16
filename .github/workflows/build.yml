@@ -77,10 +77,12 @@ jobs:
             -Dsonar.verbose=true
 
       - name: SonarQube Quality Gate
-        # Optional: fail PR if quality gate fails (requires scan step before)
-        uses: SonarSource/sonarqube-quality-gate-action@v1
+        if: github.ref == 'refs/heads/main'
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        with:
+          pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          pollingTimeoutSec: 600
+
+
