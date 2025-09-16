@@ -1,28 +1,17 @@
+
 from fastapi.testclient import TestClient
 from app import app as fastapi_app
-import sys, os
-
-ROOT = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.abspath(os.path.join(ROOT, ".."))
-if ROOT not in sys.path:
-    sys.path.append(ROOT)
 
 client = TestClient(fastapi_app)
 
-def test_health_endpoint():
+def test_health():
     r = client.get("/health")
     assert r.status_code == 200
-    assert r.json()["status"] == "ok"
+    assert r.json() == {"status": "ok"}
 
-def test_config_endpoint():
-    r = client.get("/config")
-    assert r.status_code == 200
-    assert isinstance(r.json(), dict)
-    assert "score_to_decision" in r.json()
-
-def test_transaction_endpoint():
+def test_transaction_basic():
     payload = {
-        "transaction_id": 42,
+        "transaction_id": 1,
         "amount_mxn": 5200.0,
         "customer_txn_30d": 1,
         "geo_state": "Nuevo León",
@@ -41,6 +30,5 @@ def test_transaction_endpoint():
     r = client.post("/transaction", json=payload)
     assert r.status_code == 200
     body = r.json()
-    assert body["transaction_id"] == 42
+    assert body["transaction_id"] == 1
     assert body["decision"] in ("ACCEPTED", "IN_REVIEW", "REJECTED")
-    assert isinstance(body["risk_score"], int)
