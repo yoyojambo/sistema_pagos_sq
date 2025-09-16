@@ -68,7 +68,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           # For self-hosted SonarQube set a repo/org variable SONAR_HOST_URL (e.g., https://sonarqube.my-domain.com)
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           # ensure coverage/junit paths are picked; can also be set in sonar-project.properties
           args: >
@@ -81,6 +81,6 @@ jobs:
         uses: SonarSource/sonarqube-quality-gate-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           pollingTimeoutSec: 600
