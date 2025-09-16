@@ -1,37 +1,3 @@
-#!/usr/bin/env python3
-"""
-Simple, explainable rules engine for Card-Not-Present (CNP) authorization decisions.
-
-Inputs: CSV with columns:
-- transaction_id (int/str)
-- amount_mxn (float)
-- customer_txn_30d (int)   -> purchase frequency in last 30 days
-- geo_state (str)
-- device_type (str)        -> "mobile" / "desktop"
-- chargeback_count (int)   -> historical chargebacks for this customer/merchant pair or customer
-- hour (int)               -> 0..23
-- product_type (str)       -> "digital" / "physical" / "subscription"
-- latency_ms (int)         -> time to authenticate/collect info; very high can be bot/test signals
-- user_reputation (str)    -> "trusted" / "recurrent" / "new" / "high_risk"
-- device_fingerprint_risk (str) -> "low" / "medium" / "high"
-- ip_risk (str)            -> "low" / "medium" / "high"
-- email_risk (str)         -> "low" / "medium" / "high" / "new_domain"
-- bin_country (str)        -> card country
-- ip_country (str)         -> country resolved from IP
-
-Output:
-- decision: "ACCEPTED", "IN_REVIEW", "REJECTED"
-- risk_score: integer
-- reasons: semicolon-separated triggers
-
-Run:
-    python decision_engine.py --input /path/to/transactions.csv --output /path/to/decisions.csv
-
-Notes:
-- Thresholds are intentionally conservative for demo; adjust to your business.
-- This engine is deterministic and explainable. You can A/B test rule toggles.
-"""
-
 import argparse
 import pandas as pd
 from typing import Dict, Any, List

@@ -1,4 +1,37 @@
+stages:
+  - test
+  - sonar
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .cache/pip
+
+unit_tests:
+  stage: test
+  image: python:3.11
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
+  script:
+    - pytest
+  artifacts:
+    when: always
+    reports:
+      junit: junit.xml
+    paths:
+      - coverage.xml
+      - junit.xml
+      - .pytest_cache/
+      
 name: Build
+stage: sonar
+dependencies:
+  - unit_tests
 on:
   push:
     branches:
