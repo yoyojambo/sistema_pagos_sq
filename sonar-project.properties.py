@@ -1,0 +1,1 @@
+sonar.projectKey=sistema_pagos
