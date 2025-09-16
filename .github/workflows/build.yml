@@ -40,6 +40,15 @@ jobs:
       - name: Run unit tests (pytest + coverage XML + JUnit)
         run: |
           pytest
+      - name: Debug coverage files
+        if: always()
+        run: |
+          pwd
+          ls -la
+          echo '--- coverage.xml head ---'
+          if [ -f coverage.xml ]; then head -n 40 coverage.xml; else echo 'coverage.xml not found'; fi
+          echo '--- junit.xml head ---'
+          if [ -f junit.xml ]; then head -n 40 junit.xml; else echo 'junit.xml not found'; fi
 
       - name: Upload test reports (artifacts)
         if: always()
@@ -63,6 +72,7 @@ jobs:
           args: >
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.python.xunit.reportPath=junit.xml
+            -Dsonar.verbose=true
 
       - name: SonarQube Quality Gate
         # Optional: fail PR if quality gate fails (requires scan step before)
