@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import tempfile
 import os
 import decision_engine as de
@@ -36,7 +37,7 @@ def test_run_creates_output_csv(tmp_path):
 
     # sanity check
     assert result_df.iloc[0]["decision"] in ("ACCEPTED", "IN_REVIEW", "REJECTED")
-    assert isinstance(result_df.iloc[0]["risk_score"], int)
+    assert isinstance(result_df.iloc[0]["risk_score"], np.integer)
     assert isinstance(result_df.iloc[0]["reasons"], str)
 
 def test_import_engine():
